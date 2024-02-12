@@ -48,7 +48,7 @@ jobs:
             -Dsonar.host.url=http://sonarqube:9000 \
             -Dsonar.qualitygate.wait=true \
             -Dsonar.login=admin \
-            -Dsonar.password=admin
+            -Dsonar.password=admin1
 
   deploy:
     needs: qa
