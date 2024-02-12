@@ -11,8 +11,8 @@ public class ModeloDatosTest {
         boolean expResult = false;
         // Aquí debería continuar el código para realizar la prueba
         boolean result = instance.existeJugador(nombre);
-        //assertEquals(expResult, result);
-        fail("Fallo forzado.");
+        assertEquals(expResult, result);
+        //fail("Fallo forzado.");
     }
 }
 
