@@ -1,11 +1,11 @@
 <html>
 <head>
-<title>Votación mejor jugador liga ACB</title>
+<title>Votacion mejor jugador liga ACB</title>
 <link href="estilos.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="resultado">
         <font size=10>
-        Votación al mejor jugador de la liga ACB
+        Votacion al mejor jugador de la liga ACB
         <hr>
         <%
             String nombreP = (String) session.getAttribute("nombreCliente");
