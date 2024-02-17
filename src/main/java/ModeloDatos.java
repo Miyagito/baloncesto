@@ -8,6 +8,10 @@ public class ModeloDatos {
     private Statement set;
     private ResultSet rs;
     private static final Logger LOGGER = Logger.getLogger(ModeloDatos.class.getName());
+    private static final String ERROR_CLOSING_STATEMENT = "Error al cerrar Statement";
+    private static final String ERROR_MODIFYING_TABLE = "No modifica la tabla";
+    private static final String ERROR_INSERTING_TABLE = "No inserta en la tabla";
+    private static final String ERROR_RESETTING_VOTES = "No se pudo resetear los votos";
 
     public void abrirConexion() {
         try {
@@ -27,78 +31,85 @@ public class ModeloDatos {
     }
 
     public boolean existeJugador(String nombre) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         boolean existe = false;
         try {
-            set = con.createStatement();
-            rs = set.executeQuery("SELECT * FROM Jugadores");
-            while (rs.next()) {
-                String cad = rs.getString("Nombre").trim();
-                if (cad.equals(nombre.trim())) {
-                    existe = true;
-                }
-            }
+            String sql = "SELECT * FROM Jugadores WHERE nombre = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            rs = pstmt.executeQuery();
+            existe = rs.next(); // Si hay al menos un resultado, el jugador existe
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "No lee de la tabla", e);
+            LOGGER.log(Level.SEVERE, "No se pudo comprobar la existencia del jugador", e);
         } finally {
             try {
                 if (rs != null) rs.close();
-                if (set != null) set.close();
+                if (pstmt != null) pstmt.close();
             } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error al cerrar Statement o ResultSet", e);
+                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
             }
         }
         return existe;
     }
 
     public void actualizarJugador(String nombre) {
+        PreparedStatement pstmt = null;
         try {
-            set = con.createStatement();
-            set.executeUpdate("UPDATE Jugadores SET votos = votos + 1 WHERE nombre LIKE '%" + nombre + "%'");
+            String sql = "UPDATE Jugadores SET votos = votos + 1 WHERE nombre = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            pstmt.executeUpdate();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "No modifica la tabla", e);
+            LOGGER.log(Level.SEVERE, ERROR_MODIFYING_TABLE, e);
         } finally {
             try {
-                if (set != null) set.close();
+                if (pstmt != null) pstmt.close();
             } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error al cerrar Statement", e);
-            }
-        }
-    }
-
-    public void insertarJugador(String nombre) {
-        try {
-            set = con.createStatement();
-            set.executeUpdate("INSERT INTO Jugadores (nombre, votos) VALUES ('" + nombre + "', 1)");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "No inserta en la tabla", e);
-        } finally {
-            try {
-                if (set != null) set.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error al cerrar Statement", e);
-            }
-        }
-    }
-
-    public void resetearVotos() {
-        try {
-            set = con.createStatement();
-            set.executeUpdate("UPDATE Jugadores SET votos=0");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "No se pudo resetear los votos", e);
-        } finally {
-            try {
-                if (set != null) set.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error al cerrar Statement", e);
+                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
             }
         }
     }
     
+    public void insertarJugador(String nombre) {
+        PreparedStatement pstmt = null;
+        try {
+            String sql = "INSERT INTO Jugadores (nombre, votos) VALUES (?, 1)";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, ERROR_INSERTING_TABLE, e);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+            }
+        }
+    }
+    
+    public void resetearVotos() {
+        PreparedStatement pstmt = null;
+        try {
+            String sql = "UPDATE Jugadores SET votos = 0";
+            pstmt = con.prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, ERROR_RESETTING_VOTES, e);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+            }
+        }
+    }
+
     public void cerrarConexion() {
         try {
             if (con != null) con.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "Error al cerrar la conexión", e);
         }
     }
