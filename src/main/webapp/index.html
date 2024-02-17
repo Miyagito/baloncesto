@@ -3,18 +3,19 @@ Document : index.html
 Author : Roberto Barchino (aplicacion original)
 -->
 <html>
-
 <head>
     <title>Votacion mejor jugador liga ACB</title>
     <link href="estilos.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
     <center>
         <H1>Votacion al mejor jugador de la liga ACB</H1>
     </center>
     <hr>
     <form action="Acb" method="POST">
+
+        <input type="hidden" name="accion" value="Votar"/>
+        
         <p align="left">Nombre del Visitante: <input type="text" size="20" name="txtNombre">
             eMail: <input type="text" size="20" name="txtMail"></p> REAL MADRID:<br>
 
@@ -34,8 +35,9 @@ Author : Roberto Barchino (aplicacion original)
         <p align="left">
             <input type="submit" name="B1" value="Votar">
             <input type="reset" name="B2" value="Reset">
+        
+            <button type="submit" name="accion" value="PonerVotosACero">Poner votos a cero</button>
         </p>
     </form>
 </body>
-
 </html>
