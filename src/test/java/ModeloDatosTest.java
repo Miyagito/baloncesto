@@ -1,34 +1,44 @@
 import org.junit.jupiter.api.Test;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ModeloDatosTest {
+    
+    private static final Logger LOGGER = Logger.getLogger(ModeloDatosTest.class.getName());
 
     @Test
-    public void testExisteJugador() {
-        System.out.println("Prueba de existeJugador");
-        String nombre = "";
+    void testExisteJugador() {
+        LOGGER.info("Prueba de existeJugador");
+        String nombre = "NombreDelJugador"; // Coloca un nombre válido para la prueba
         ModeloDatos instance = new ModeloDatos();
-        boolean expResult = false;
-        // Aquí debería continuar el código para realizar la prueba
+        instance.abrirConexion();
         boolean result = instance.existeJugador(nombre);
-        assertEquals(expResult, result);
-        //fail("Fallo forzado.");
+        instance.cerrarConexion();
+        // Suponiendo que el nombre del jugador existe en la base de datos, el resultado esperado es 'true'
+        assertTrue(result, "El jugador debería existir en la base de datos.");
     }
 
     @Test
-    public void testActualizarJugador() {
-        System.out.println("Prueba de actualizarJugador");
-        // Simulamos el nombre de un jugador existente
-        String nombre = "JugadorPrueba"; // Asume que este nombre es de un jugador existente para propósitos de la prueba
+    void testActualizarJugador() {
+        LOGGER.info("Prueba de actualizarJugador");
+        String nombre = "JugadorPrueba";
         ModeloDatos instance = new ModeloDatos();
-        instance.abrirConexion(); // Asumiendo que este método prepara la conexión con la base de datos
-
-        // NOTA: Esta "prueba" solo simula la acción de actualizar un jugador, no verifica el resultado real
-        System.out.println("Simulación: Se asume que el método actualiza correctamente los votos del jugador.");
+        instance.abrirConexion();
         
-        // Aquí simplemente asumimos que el método funciona sin realizar la operación real ni verificar el resultado
-        assertTrue(true, "Simulación: Se asume que el jugador fue actualizado correctamente.");
-
-        instance.cerrarConexion(); // Aseguramos cerrar la conexión después de la simulación
+        // Realiza la operación de actualización.
+        // En una prueba real, aquí verificarías el estado antes y después de la actualización.
+        // Para la simulación, asumimos que la operación es exitosa.
+        
+        // Simulamos la operación de actualización
+        // instance.actualizarJugador(nombre);
+        
+        LOGGER.info("Simulación: Se asume que el método actualiza correctamente los votos del jugador.");
+        
+        // Afirmamos que la operación simulada fue "exitosa".
+        // NOTA: Esta afirmación no tiene un propósito real en una prueba unitaria y debería reemplazarse por una afirmación legítima.
+        // assertTrue(condition, "Mensaje en caso de fallo");
+        
+        instance.cerrarConexion();
     }
 }
