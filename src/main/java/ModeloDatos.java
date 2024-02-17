@@ -5,8 +5,6 @@ import java.util.logging.Level;
 public class ModeloDatos {
 
     private Connection con;
-    private Statement set;
-    private ResultSet rs;
     private static final Logger LOGGER = Logger.getLogger(ModeloDatos.class.getName());
     private static final String ERROR_CLOSING_STATEMENT = "Error al cerrar Statement";
     private static final String ERROR_MODIFYING_TABLE = "No modifica la tabla";
@@ -31,24 +29,15 @@ public class ModeloDatos {
     }
 
     public boolean existeJugador(String nombre) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         boolean existe = false;
-        try {
-            String sql = "SELECT * FROM Jugadores WHERE nombre = ?";
-            pstmt = con.prepareStatement(sql);
+        String sql = "SELECT * FROM Jugadores WHERE nombre = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setString(1, nombre);
-            rs = pstmt.executeQuery();
-            existe = rs.next(); // Si hay al menos un resultado, el jugador existe
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "No se pudo comprobar la existencia del jugador", e);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                existe = rs.next();
             }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "No se pudo comprobar la existencia del jugador", e);
         }
         return existe;
     }
