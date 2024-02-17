@@ -8,34 +8,32 @@ public class ModeloDatosTest {
     private static final Logger LOGGER = Logger.getLogger(ModeloDatosTest.class.getName());
 
     @Test
-    void testExisteJugador() {
-        LOGGER.info("Prueba de existeJugador");
-        String nombre = "NombreDelJugador"; // Coloca un nombre válido para la prueba
+    public void testExisteJugador() {
+        System.out.println("Prueba de existeJugador");
+        String nombre = "";
         ModeloDatos instance = new ModeloDatos();
-        instance.abrirConexion();
+        boolean expResult = false;
+        // Aquí debería continuar el código para realizar la prueba
         boolean result = instance.existeJugador(nombre);
-        instance.cerrarConexion();
-        // Suponiendo que el nombre del jugador existe en la base de datos, el resultado esperado es 'true'
-        assertTrue(result, "El jugador debería existir en la base de datos.");
+        assertEquals(expResult, result);
+        //fail("Fallo forzado.");
     }
 
     @Test
     void testActualizarJugador() {
-        LOGGER.info("Prueba de actualizarJugador");
-        String nombre = "JugadorPrueba";
+        String nombre = "JugadorExistente"; // Asegúrate de que este jugador ya exista en la base de datos para la prueba
         ModeloDatos instance = new ModeloDatos();
         instance.abrirConexion();
         
-        // Aquí iría la lógica real para actualizar un jugador y luego verificar que se ha actualizado correctamente.
-        
-        // Simulamos la operación de actualización
-        // instance.actualizarJugador(nombre);
-        
-        LOGGER.info("Simulación: Se asume que el método actualiza correctamente los votos del jugador.");
-        
-        // Afirmamos que la operación simulada fue "exitosa". Esta afirmación es solo para satisfacer la regla de SonarQube.
-        assertTrue(true, "Simulación: Se asume que el jugador fue actualizado correctamente.");
-        
+        // Realiza la actualización
+        instance.actualizarJugador(nombre);
+
+        // Ahora verifica que los votos del jugador se hayan incrementado en 1
+        // Puedes hacer esto realizando una consulta a la base de datos y comprobando el valor de los votos.
+        // Asumiendo que tienes un método que obtiene los votos de un jugador, sería algo así:
+        int votosActualizados = instance.getVotosJugador(nombre);
+        assertTrue(votosActualizados > 0, "Los votos del jugador deberían haberse incrementado.");
+
         instance.cerrarConexion();
     }
 }

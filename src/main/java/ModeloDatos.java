@@ -1,105 +1,106 @@
-import java.sql.*;
-import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ModeloDatos {
 
     private Connection con;
+    private Statement set;
+    private ResultSet rs;
     private static final Logger LOGGER = Logger.getLogger(ModeloDatos.class.getName());
-    private static final String ERROR_CLOSING_STATEMENT = "Error al cerrar Statement";
-    private static final String ERROR_MODIFYING_TABLE = "No modifica la tabla";
-    private static final String ERROR_INSERTING_TABLE = "No inserta en la tabla";
-    private static final String ERROR_RESETTING_VOTES = "No se pudo resetear los votos";
 
     public void abrirConexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbHost = System.getenv().get("DATABASE_HOST");
-            String dbPort = System.getenv().get("DATABASE_PORT");
-            String dbName = System.getenv().get("DATABASE_NAME");
-            String dbUser = System.getenv().get("DATABASE_USER");
-            String dbPass = System.getenv().get("DATABASE_PASS");
-
-            String url = dbHost + ":" + dbPort + "/" + dbName;
+            // Con variables de entorno
+            String dbHost = System.getenv("DATABASE_HOST");
+            String dbPort = System.getenv("DATABASE_PORT");
+            String dbName = System.getenv("DATABASE_NAME");
+            String dbUser = System.getenv("DATABASE_USER");
+            String dbPass = System.getenv("DATABASE_PASS");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             con = DriverManager.getConnection(url, dbUser, dbPass);
-
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             LOGGER.log(Level.SEVERE, "No se ha podido conectar", e);
         }
     }
 
     public boolean existeJugador(String nombre) {
         boolean existe = false;
-        String sql = "SELECT * FROM Jugadores WHERE nombre = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setString(1, nombre);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                existe = rs.next();
-            }
+        try {
+            set = con.createStatement();
+            rs = set.executeQuery("SELECT * FROM Jugadores WHERE nombre = '" + nombre + "'");
+            existe = rs.next();
+            rs.close();
+            set.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "No se pudo comprobar la existencia del jugador", e);
+            LOGGER.log(Level.SEVERE, "No lee de la tabla", e);
         }
         return existe;
     }
 
     public void actualizarJugador(String nombre) {
-        PreparedStatement pstmt = null;
         try {
-            String sql = "UPDATE Jugadores SET votos = votos + 1 WHERE nombre = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, nombre);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, ERROR_MODIFYING_TABLE, e);
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+            set = con.createStatement();
+            int count = set.executeUpdate("UPDATE Jugadores SET votos=votos+1 WHERE nombre = '" + nombre + "'");
+            if (count == 0) {
+                LOGGER.log(Level.INFO, "No se encontró el jugador para actualizar: " + nombre);
             }
+            set.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "No modifica la tabla", e);
         }
     }
-    
+
     public void insertarJugador(String nombre) {
-        PreparedStatement pstmt = null;
         try {
-            String sql = "INSERT INTO Jugadores (nombre, votos) VALUES (?, 1)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, nombre);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, ERROR_INSERTING_TABLE, e);
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+            set = con.createStatement();
+            int count = set.executeUpdate("INSERT INTO Jugadores (nombre, votos) VALUES ('" + nombre + "', 1)");
+            if (count == 0) {
+                LOGGER.log(Level.INFO, "No se pudo insertar el jugador: " + nombre);
             }
+            set.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "No inserta en la tabla", e);
         }
     }
-    
-    public void resetearVotos() {
-        PreparedStatement pstmt = null;
-        try {
-            String sql = "UPDATE Jugadores SET votos = 0";
-            pstmt = con.prepareStatement(sql);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, ERROR_RESETTING_VOTES, e);
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, ERROR_CLOSING_STATEMENT, e);
+
+    public int getVotosJugador(String nombre) {
+        int votos = 0;
+        String sql = "SELECT votos FROM Jugadores WHERE nombre = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, nombre);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    votos = rs.getInt("votos");
+                }
             }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error al obtener los votos del jugador", e);
+        }
+        return votos;
+    }
+
+    public void resetearVotos() {
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate("UPDATE Jugadores SET votos = 0");
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "No se pudo resetear los votos", e);
         }
     }
 
     public void cerrarConexion() {
         try {
-            if (con != null) con.close();
+            if (con != null && !con.isClosed()) {
+                con.close();
+            }
         } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "Error al cerrar la conexión", e);
+            LOGGER.log(Level.SEVERE, "Error al cerrar la conexión", e);
         }
     }
 }
