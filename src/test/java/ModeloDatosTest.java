@@ -1,11 +1,7 @@
 import org.junit.jupiter.api.Test;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ModeloDatosTest {
-    
-    private static final Logger LOGGER = Logger.getLogger(ModeloDatosTest.class.getName());
 
     @Test
     public void testExisteJugador() {
