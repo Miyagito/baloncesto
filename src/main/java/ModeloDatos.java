@@ -32,12 +32,12 @@ public class ModeloDatos {
 
     public boolean existeJugador(String nombre) {
         boolean existe = false;
-        try {
-            set = con.createStatement();
-            rs = set.executeQuery("SELECT * FROM Jugadores WHERE nombre = '" + nombre + "'");
-            existe = rs.next();
-            rs.close();
-            set.close();
+        String sql = "SELECT 1 FROM Jugadores WHERE nombre = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, nombre);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                existe = rs.next();
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "No lee de la tabla", e);
         }
