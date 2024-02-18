@@ -24,26 +24,20 @@ public class Acb extends HttpServlet {
         String nombreP = req.getParameter("txtNombre");
         String nombre = req.getParameter("R1");
         String accion = req.getParameter("accion");
-
+    
         try {
-            if (accion != null) {
-                if ("resetVotos".equals(accion)) {
-                    if (bd != null) {
-                        bd.resetearVotos();
-                    }
-                    res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
-                    return; // Stop execution to prevent further processing
-                } else if ("VerVotos".equals(accion)) {
-                    res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
-                    return; // Stop execution to prevent further processing
-                }
+            if ("VerVotos".equals(accion)) {
+                // Si la acción es VerVotos, simplemente redirige a la página correspondiente
+                res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
+                return;
             }
-
+    
+            // Solo intenta procesar votos si la acción no es VerVotos y los parámetros son válidos
             if (nombreP != null && nombre != null) {
                 if ("Otros".equals(nombre)) {
                     nombre = req.getParameter("txtOtros");
                 }
-
+    
                 if (bd != null) {
                     if (bd.existeJugador(nombre)) {
                         bd.actualizarJugador(nombre);
@@ -59,7 +53,7 @@ public class Acb extends HttpServlet {
                 throw new ServletException("Nombre del visitante o acción no proporcionado.");
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Log the full stack trace for debugging
+            e.printStackTrace();
             throw new ServletException("Error al procesar la petición", e);
         }
     }
