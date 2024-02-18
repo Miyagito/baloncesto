@@ -22,7 +22,7 @@ public class Acb extends HttpServlet {
             res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
             return; // Evita que se ejecute el resto del código
         }
-        if ("verVotos".equals(accion)) {
+        if ("VerVotos".equals(accion)) {
             res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
             return; // Evita que se ejecute el resto del código
         }        
