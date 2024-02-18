@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <title>Ver Votos</title>
 </head>

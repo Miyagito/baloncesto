@@ -39,6 +39,7 @@ public class Acb extends HttpServlet {
         res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
     }
 
+    @Override
     public void destroy() {
         bd.cerrarConexion();
         super.destroy();
