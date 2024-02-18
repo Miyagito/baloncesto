@@ -2,42 +2,39 @@
 Document : index.html
 Author : Roberto Barchino (aplicacion original)
 -->
-<html>
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <title>Votacion mejor jugador liga ACB</title>
     <link href="estilos.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
-    <center>
-        <H1>Votacion al mejor jugador de la liga ACB</H1>
-    </center>
+    <h1 class="center-text">Votacion al mejor jugador de la liga ACB</h1>
     <hr>
     <form action="Acb" method="POST">
-        <p align="left">Nombre del Visitante: <input type="text" size="20" name="txtNombre">
-            eMail: <input type="text" size="20" name="txtMail"></p> REAL MADRID:<br>
+        <div class="left-align">Nombre del Visitante: <input type="text" size="20" name="txtNombre">
+            eMail: <input type="text" size="20" name="txtMail"></div>
+        REAL MADRID:<br>
 
         <img src="Llull.jpg" width="100" height="67" alt="Llul" />
-        <p align="left"><input type="radio" name="R1" value="Llull">Llull</p>
+        <div class="left-align"><input type="radio" name="R1" value="Llull">Llull</div>
 
         <img src="Rudy.jpg" width="100" height="67" alt="Rudy" />
-        <p align="left"><input type="radio" name="R1" value="Rudy">Rudy</p>
+        <div class="left-align"><input type="radio" name="R1" value="Rudy">Rudy</div>
 
         <img src="Tavares.jpg" width="100" height="67" alt="Tavares" />
-        <p align="left"><input type="radio" name="R1" value="Tavares">Tavares</p>
+        <div class="left-align"><input type="radio" name="R1" value="Tavares">Tavares</div>
 
         <br>
-        <p align="left"><input type="radio" name="R1" value="Otros">Otro
+        <div class="left-align"><input type="radio" name="R1" value="Otros">Otro
             <input type="text" size="20" name="txtOtros">
-        </p>
-        <p align="left">
+        </div>
+        <div class="left-align">
             <input type="submit" name="B1" value="Votar">
             <input type="reset" name="B2" value="Reset">
             <input type="submit" name="accion" value="resetVotos">
             <input type="submit" name="accion" value="verVotos">
-        </p>
+        </div>
     </form>
 </body>
-
 </html>

@@ -6,3 +6,11 @@ body {
   color: yellow;
   background-color: darkred;
 }
+
+.left-align {
+  text-align: left;
+}
+
+.center-text {
+  text-align: center;
+}
