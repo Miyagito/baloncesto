@@ -40,14 +40,14 @@ public class ModeloDatos {
             Class.forName("com.mysql.cj.jdbc.Driver");
     
             // Credenciales directas
-            String dbHost = "jdbc:mysql://localhost"; // Cambia "localhost" por la dirección de tu servidor de base de datos
+            String dbHost = "localhost"; // Cambia "localhost" por la dirección de tu servidor de base de datos
             String dbPort = "3306"; // Asegúrate de que este sea el puerto correcto
             String dbName = "nombre_de_tu_base_de_datos"; // Sustituye por el nombre de tu base de datos
             String dbUser = "tu_usuario"; // Sustituye por tu usuario de base de datos
             String dbPass = "tu_contraseña"; // Sustituye por tu contraseña
     
             // Asegúrate de que la URL de conexión esté correctamente formada
-            String url = dbHost + ":" + dbPort + "/" + dbName + "?useSSL=false"; // Añade "?useSSL=false" si tu base de datos no usa SSL
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName + "?useSSL=false"; // Correcto
             con = DriverManager.getConnection(url, dbUser, dbPass);
     
             System.out.println("Conexión establecida con éxito.");
