@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.miapp.baloncesto.Jugador" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,13 +23,25 @@
             <th>Jugador</th>
             <th>Votos</th>
         </tr>
+        <% 
+        if (jugadores != null && !jugadores.isEmpty()) {
+            for (Object object : jugadores) {
+                Jugador jugador = (Jugador) object;
+        %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>
                     <td><%= jugador.getVotos() %></td>
                 </tr>
+        <%
+            }
+        } else {
+        %>
             <tr>
                 <td colspan="2">No hay votos registrados.</td>
             </tr>
+        <%
+        }
+        %>
     </table>
 
     <a href="index.html">Volver al inicio</a>

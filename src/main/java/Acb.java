@@ -1,7 +1,8 @@
+import com.miapp.baloncesto.Jugador;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Acb extends HttpServlet {
@@ -31,7 +32,7 @@ public class Acb extends HttpServlet {
         try {
 
             if ("VerVotos".equals(accion)) {
-                // Aquí utilizamos 'ModeloDatos.Jugador' para referenciar la clase interna 'Jugador'
+                // Aquí utilizamos 'ModeloDatos.com.miapp.baloncesto.Jugador' para referenciar la clase interna 'com.miapp.baloncesto.Jugador'
                 List<Jugador> jugadores = bd.obtenerJugadores();
                 req.setAttribute("listaJugadores", jugadores);
                 RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");

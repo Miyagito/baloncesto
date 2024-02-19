@@ -1,3 +1,5 @@
+package com.miapp.baloncesto;
+
 public class Jugador {
     private String nombre;
     private int votos;
