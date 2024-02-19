@@ -40,9 +40,8 @@ public class ModeloDatos {
             Class.forName("com.mysql.cj.jdbc.Driver");
     
             // Credenciales directas
-            String dbHost = "localhost"; // Cambia "localhost" por la dirección de tu servidor de base de datos
             String dbPort = "3306"; // Asegúrate de que este sea el puerto correcto
-            String dbName = "nombre_de_tu_base_de_datos"; // Sustituye por el nombre de tu base de datos
+            String dbName = "baloncesto"; // Sustituye por el nombre de tu base de datos
             String dbUser = "tu_usuario"; // Sustituye por tu usuario de base de datos
             String dbPass = "tu_contrasea"; // Sustituye por tu contraseña
     
