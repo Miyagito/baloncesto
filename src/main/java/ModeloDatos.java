@@ -39,11 +39,10 @@ public class ModeloDatos {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
     
-            // Credenciales directas
-            String dbPort = "3306"; // Asegúrate de que este sea el puerto correcto
-            String dbName = "baloncesto"; // Sustituye por el nombre de tu base de datos
-            String dbUser = "tu_usuario"; // Sustituye por tu usuario de base de datos
-            String dbPass = "tu_contrasea"; // Sustituye por tu contraseña
+            String dbPort = "3306";
+            String dbName = "baloncesto";
+            String dbUser = "tu_usuario";
+            String dbPass = "tu_contrasea";
     
             // Asegúrate de que la URL de conexión esté correctamente formada
             String url = "jdbc:mysql://127.0.0.1:" + dbPort + "/" + dbName + "?useSSL=false";
@@ -52,7 +51,7 @@ public class ModeloDatos {
             System.out.println("Conexión establecida con éxito.");
     
         } catch (Exception e) {
-            e.printStackTrace(); // Esto imprimirá el stack trace completo, ayudando a identificar el problema con más detalle
+            e.printStackTrace();
         }
     }
     
