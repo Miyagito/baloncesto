@@ -36,24 +36,28 @@ public class ModeloDatos {
     private ResultSet rs;
 
     public void abrirConexion() {
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
+    
             // Con variables de entorno
-            String dbHost = System.getenv().get("DATABASE_HOST");
-            String dbPort = System.getenv().get("DATABASE_PORT");
-            String dbName = System.getenv().get("DATABASE_NAME");
-            String dbUser = System.getenv().get("DATABASE_USER");
-            String dbPass = System.getenv().get("DATABASE_PASS");
-
-            String url = dbHost + ":" + dbPort + "/" + dbName;
+            String dbHost = System.getenv("DATABASE_HOST");
+            String dbPort = System.getenv("DATABASE_PORT");
+            String dbName = System.getenv("DATABASE_NAME");
+            String dbUser = System.getenv("DATABASE_USER");
+            String dbPass = System.getenv("DATABASE_PASS");
+    
+            // Verificar que las variables de entorno no son null
+            if (dbHost == null || dbPort == null || dbName == null || dbUser == null || dbPass == null) {
+                throw new Exception("Una o más variables de entorno no están definidas.");
+            }
+    
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             con = DriverManager.getConnection(url, dbUser, dbPass);
-
+    
+            System.out.println("Conexión establecida con éxito.");
+    
         } catch (Exception e) {
-            // No se ha conectado
-            System.out.println("No se ha podido conectar");
-            System.out.println("El error es: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
