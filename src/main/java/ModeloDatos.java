@@ -94,15 +94,11 @@ public class ModeloDatos {
     }
 
     public void insertarJugador(String nombre) {
-        try {
-            set = con.createStatement();
-            set.executeUpdate("INSERT INTO Jugadores " + " (nombre,votos) VALUES ('" + nombre + "',1)");
-            rs.close();
-            set.close();
+        try (PreparedStatement pstmt = con.prepareStatement("INSERT INTO Jugadores (nombre, votos) VALUES (?, 1)")) {
+            pstmt.setString(1, nombre);
+            pstmt.executeUpdate();
         } catch (Exception e) {
-            // No inserta en la tabla
-            System.out.println("No inserta en la tabla");
-            System.out.println("El error es: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
