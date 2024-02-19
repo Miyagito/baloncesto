@@ -39,28 +39,24 @@ public class ModeloDatos {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
     
-            // Con variables de entorno
-            String dbHost = System.getenv("DATABASE_HOST");
-            String dbPort = System.getenv("DATABASE_PORT");
-            String dbName = System.getenv("DATABASE_NAME");
-            String dbUser = System.getenv("DATABASE_USER");
-            String dbPass = System.getenv("DATABASE_PASS");
+            // Credenciales directas
+            String dbHost = "jdbc:mysql://localhost"; // Cambia "localhost" por la dirección de tu servidor de base de datos
+            String dbPort = "3306"; // Asegúrate de que este sea el puerto correcto
+            String dbName = "nombre_de_tu_base_de_datos"; // Sustituye por el nombre de tu base de datos
+            String dbUser = "tu_usuario"; // Sustituye por tu usuario de base de datos
+            String dbPass = "tu_contraseña"; // Sustituye por tu contraseña
     
-            // Verificar que las variables de entorno no son null
-            if (dbHost == null || dbPort == null || dbName == null || dbUser == null || dbPass == null) {
-                throw new Exception("Una o más variables de entorno no están definidas.");
-            }
-    
-            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            // Asegúrate de que la URL de conexión esté correctamente formada
+            String url = dbHost + ":" + dbPort + "/" + dbName + "?useSSL=false"; // Añade "?useSSL=false" si tu base de datos no usa SSL
             con = DriverManager.getConnection(url, dbUser, dbPass);
     
             System.out.println("Conexión establecida con éxito.");
     
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Esto imprimirá el stack trace completo, ayudando a identificar el problema con más detalle
         }
     }
-
+    
     public boolean existeJugador(String nombre) {
         boolean existe = false;
         String cad;
@@ -98,11 +94,15 @@ public class ModeloDatos {
     }
 
     public void insertarJugador(String nombre) {
-        try (PreparedStatement pstmt = con.prepareStatement("INSERT INTO Jugadores (nombre, votos) VALUES (?, 1)")) {
-            pstmt.setString(1, nombre);
-            pstmt.executeUpdate();
+        try {
+            set = con.createStatement();
+            set.executeUpdate("INSERT INTO Jugadores " + " (nombre,votos) VALUES ('" + nombre + "',1)");
+            rs.close();
+            set.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            // No inserta en la tabla
+            System.out.println("No inserta en la tabla");
+            System.out.println("El error es: " + e.getMessage());
         }
     }
 
