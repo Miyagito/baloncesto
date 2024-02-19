@@ -1,29 +1,53 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.acbvotacion.ModeloDatos" %>
+<%@ page import="com.example.acbvotacion.ModeloDatos.Jugador" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Votacion mejor jugador liga ACB</title>
+    <title>Votación Mejor Jugador Liga ACB</title>
     <link href="estilos.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="resultado">
-    <h1 class="center-text">Votacion al mejor jugador de la liga ACB</h1>
+    <h1 class="center-text">Votación al Mejor Jugador de la Liga ACB</h1>
     <hr>
-    <% String nombreP = (String) session.getAttribute("nombreCliente"); %>
-    <p class="center-text">Muchas gracias <%= nombreP %> por su voto</p>
+    <% 
+        ModeloDatos bd = new ModeloDatos();
+        bd.abrirConexion();
+        List<Jugador> jugadores = bd.obtenerJugadores();
+        bd.cerrarConexion();
+        String nombreP = (String) session.getAttribute("nombreCliente");
+    %>
+    <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
 
-    <h1 class="center-text">Tabla de Votos</h1>
+    <h2 class="center-text">Tabla de Votos</h2>
     <table border="1">
         <tr>
             <th>Jugador</th>
             <th>Votos</th>
         </tr>
-        <!-- Aquí comienza la tabla vacía -->
-        <tr>
-            <td colspan="2">No hay votos registrados.</td>
-        </tr>
-        <!-- Aquí termina la tabla vacía -->
+        <!-- Aquí se muestran los datos de los jugadores -->
+        <% 
+        if (jugadores != null && !jugadores.isEmpty()) {
+            for (Jugador jugador : jugadores) {
+        %>
+                <tr>
+                    <td><%= jugador.getNombre() %></td>
+                    <td><%= jugador.getVotos() %></td>
+                </tr>
+        <%
+            }
+        } else {
+        %>
+            <tr>
+                <td colspan="2">No hay votos registrados.</td>
+            </tr>
+        <%
+        }
+        %>
     </table>
 
-    <a href="index.html">Ir al comienzo</a>
+    <a href="index.html">Volver al inicio</a>
 </body>
 </html>
