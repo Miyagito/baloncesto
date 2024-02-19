@@ -12,6 +12,7 @@ public class Acb extends HttpServlet {
     @Override
     public void init(ServletConfig cfg) throws ServletException {
         try {
+            bd = new ModeloDatos();
             bd.abrirConexion();
         } catch (Exception e) {
             // Log the exception and rethrow as ServletException
