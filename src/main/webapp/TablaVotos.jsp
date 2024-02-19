@@ -26,7 +26,7 @@
         <% 
         if (jugadores != null && !jugadores.isEmpty()) {
             for (Object object : jugadores) {
-                Jugador jugador = (Jugador) object; // Cast del objeto a Jugador
+                Jugador jugador = (Jugador) object
         %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>
