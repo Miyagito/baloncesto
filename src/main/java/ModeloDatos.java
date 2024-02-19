@@ -47,7 +47,7 @@ public class ModeloDatos {
             String dbPass = "tu_contraseña"; // Sustituye por tu contraseña
     
             // Asegúrate de que la URL de conexión esté correctamente formada
-            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName + "?useSSL=false"; // Correcto
+            String url = "jdbc:mysql://127.0.0.1:" + dbPort + "/" + dbName + "?useSSL=false";
             con = DriverManager.getConnection(url, dbUser, dbPass);
     
             System.out.println("Conexión establecida con éxito.");
