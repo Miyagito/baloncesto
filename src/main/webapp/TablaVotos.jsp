@@ -11,7 +11,7 @@
     <hr>
     <% 
         String nombreP = (String) session.getAttribute("nombreCliente");
-        List<Jugador> jugadores = (List<Jugador>) request.getAttribute("listaJugadores");
+        List jugadores = (List) request.getAttribute("listaJugadores"); // Sin especificar el tipo de la lista
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
@@ -25,7 +25,8 @@
         <!-- Aquí se muestran los datos de los jugadores -->
         <% 
         if (jugadores != null && !jugadores.isEmpty()) {
-            for (Jugador jugador : jugadores) {
+            for (Object object : jugadores) {
+                Jugador jugador = (Jugador) object; // Cast del objeto a Jugador
         %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>
