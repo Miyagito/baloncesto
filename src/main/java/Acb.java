@@ -28,14 +28,14 @@ public class Acb extends HttpServlet {
         try {
             if ("VerVotos".equals(accion)) {
                 // Si la acción es VerVotos, simplemente redirige a la página correspondiente
-                res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
+                res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
                 return;
             }
 
             if ("resetVotos".equals(accion)) {
                 bd.resetearVotos();
                 // Redirigir a alguna página o mostrar un mensaje de éxito
-                res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
+                res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
                 return;
             }
     
