@@ -1,4 +1,8 @@
+import com.miapp.baloncesto.Jugador;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModeloDatos {
 
@@ -7,27 +11,25 @@ public class ModeloDatos {
     private ResultSet rs;
 
     public void abrirConexion() {
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Con variables de entorno
-            String dbHost = System.getenv().get("DATABASE_HOST");
-            String dbPort = System.getenv().get("DATABASE_PORT");
-            String dbName = System.getenv().get("DATABASE_NAME");
-            String dbUser = System.getenv().get("DATABASE_USER");
-            String dbPass = System.getenv().get("DATABASE_PASS");
-
-            String url = dbHost + ":" + dbPort + "/" + dbName;
+    
+            String dbPort = "3306";
+            String dbName = "baloncesto";
+            String dbUser = "tu_usuario";
+            String dbPass = "tu_contrasea";
+    
+            // Asegúrate de que la URL de conexión esté correctamente formada
+            String url = "jdbc:mysql://127.0.0.1:" + dbPort + "/" + dbName + "?useSSL=false";
             con = DriverManager.getConnection(url, dbUser, dbPass);
-
+    
+            System.out.println("Conexión establecida con éxito.");
+    
         } catch (Exception e) {
-            // No se ha conectado
-            System.out.println("No se ha podido conectar");
-            System.out.println("El error es: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
+    
     public boolean existeJugador(String nombre) {
         boolean existe = false;
         String cad;
@@ -86,6 +88,24 @@ public class ModeloDatos {
             System.out.println("Error al resetear votos: " + e.getMessage());
         }
     }
+
+    public List<Jugador> obtenerJugadores() {
+        List<Jugador> jugadores = new ArrayList<>();
+        try {
+            set = con.createStatement();
+            rs = set.executeQuery("SELECT nombre, votos FROM Jugadores");
+            while (rs.next()) {
+                Jugador jugador = new Jugador(rs.getString("nombre"), rs.getInt("votos"));
+                jugadores.add(jugador);
+            }
+            rs.close();
+            set.close();
+        } catch (Exception e) {
+            System.out.println("Error al obtener jugadores: " + e.getMessage());
+        }
+        return jugadores;
+    }
+    
 
     public void cerrarConexion() {
         try {
