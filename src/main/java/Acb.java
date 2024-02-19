@@ -52,20 +52,23 @@ public class Acb extends HttpServlet {
                 if ("Otros".equals(nombre)) {
                     nombre = req.getParameter("txtOtros");
                 }
-    
+
                 if (bd != null) {
                     if (bd.existeJugador(nombre)) {
                         bd.actualizarJugador(nombre);
                     } else {
                         bd.insertarJugador(nombre);
                     }
+                    s.setAttribute("nombreCliente", nombreP);
+
+                    // Ahora obtenemos la lista de jugadores y la pasamos a la JSP con RequestDispatcher
+                    List<Jugador> jugadores = bd.obtenerJugadores();
+                    req.setAttribute("listaJugadores", jugadores);
+                    RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");
+                    rd.forward(req, res);
                 } else {
                     throw new ServletException("La conexión con la base de datos no está establecida.");
                 }
-                s.setAttribute("nombreCliente", nombreP);
-                List<Jugador> jugadores = bd.obtenerJugadores();
-                req.setAttribute("listaJugadores", jugadores);
-                res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
             } else {
                 throw new ServletException("Nombre del visitante o acción no proporcionado.");
             }
