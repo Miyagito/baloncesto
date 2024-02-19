@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,8 +10,8 @@
     <h1 class="center-text">Votación al Mejor Jugador de la Liga ACB</h1>
     <hr>
     <% 
-        String nombreP = (String) session.getAttribute("nombreCliente");
-        List jugadores = (List) request.getAttribute("listaJugadores"); // Sin especificar el tipo de la lista
+        String nombreP = (String) session.getAttribute("nombreCliente")
+        List jugadores = (List) request.getAttribute("listaJugadores")
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
