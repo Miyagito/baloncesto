@@ -44,7 +44,7 @@ public class ModeloDatos {
             String dbPort = "3306"; // Asegúrate de que este sea el puerto correcto
             String dbName = "nombre_de_tu_base_de_datos"; // Sustituye por el nombre de tu base de datos
             String dbUser = "tu_usuario"; // Sustituye por tu usuario de base de datos
-            String dbPass = "tu_contraseña"; // Sustituye por tu contraseña
+            String dbPass = "tu_contrasea"; // Sustituye por tu contraseña
     
             // Asegúrate de que la URL de conexión esté correctamente formada
             String url = "jdbc:mysql://127.0.0.1:" + dbPort + "/" + dbName + "?useSSL=false";
