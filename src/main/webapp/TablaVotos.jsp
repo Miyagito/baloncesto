@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page language="java" contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,8 +10,8 @@
     <h1 class="center-text">Votación al Mejor Jugador de la Liga ACB</h1>
     <hr>
     <% 
-        String nombreP = (String) session.getAttribute("nombreCliente")
-        List jugadores = (List) request.getAttribute("listaJugadores")
+        String nombreP = (String) session.getAttribute("nombreCliente");
+        List jugadores = (List) request.getAttribute("listaJugadores");
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
@@ -21,12 +21,11 @@
         <tr>
             <th>Jugador</th>
             <th>Votos</th>
-        </tr>
-        <!-- Aquí se muestran los datos de los jugadores -->
+       <!--  </tr>
         <% 
         if (jugadores != null && !jugadores.isEmpty()) {
             for (Object object : jugadores) {
-                Jugador jugador = (Jugador) object
+                Jugador jugador = (Jugador) object;
         %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>
@@ -35,12 +34,12 @@
         <%
             }
         } else {
-        %>
+        %> -->
             <tr>
                 <td colspan="2">No hay votos registrados.</td>
             </tr>
-        <%
-        }
+<!--         <%
+        } -->
         %>
     </table>
 
