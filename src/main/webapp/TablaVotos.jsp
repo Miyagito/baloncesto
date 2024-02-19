@@ -25,7 +25,7 @@
         <!-- Aquí se muestran los datos de los jugadores -->
         <% 
         if (jugadores != null && !jugadores.isEmpty()) {
-            for (ModeloDatos.Jugador jugador : jugadores) {
+            for (Jugador jugador : jugadores) {
         %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>
