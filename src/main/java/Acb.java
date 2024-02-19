@@ -32,7 +32,6 @@ public class Acb extends HttpServlet {
         try {
 
             if ("VerVotos".equals(accion)) {
-                // Aquí utilizamos 'ModeloDatos.com.miapp.baloncesto.Jugador' para referenciar la clase interna 'com.miapp.baloncesto.Jugador'
                 List<Jugador> jugadores = bd.obtenerJugadores();
                 req.setAttribute("listaJugadores", jugadores);
                 RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");
@@ -64,6 +63,8 @@ public class Acb extends HttpServlet {
                     throw new ServletException("La conexión con la base de datos no está establecida.");
                 }
                 s.setAttribute("nombreCliente", nombreP);
+                List<Jugador> jugadores = bd.obtenerJugadores();
+                req.setAttribute("listaJugadores", jugadores);
                 res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
             } else {
                 throw new ServletException("Nombre del visitante o acción no proporcionado.");
