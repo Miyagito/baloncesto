@@ -11,7 +11,7 @@
     <hr>
     <% 
         String nombreP = (String) session.getAttribute("nombreCliente");
-        List<ModeloDatos.Jugador> jugadores = (List<ModeloDatos.Jugador>) request.getAttribute("listaJugadores");
+        List<Jugador> jugadores = (List<Jugador>) request.getAttribute("listaJugadores");
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
