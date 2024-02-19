@@ -1,7 +1,4 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.example.acbvotacion.ModeloDatos" %>
-<%@ page import="com.example.acbvotacion.ModeloDatos.Jugador" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,11 +9,9 @@
     <h1 class="center-text">Votación al Mejor Jugador de la Liga ACB</h1>
     <hr>
     <% 
-        ModeloDatos bd = new ModeloDatos();
-        bd.abrirConexion();
-        List<Jugador> jugadores = bd.obtenerJugadores();
-        bd.cerrarConexion();
         String nombreP = (String) session.getAttribute("nombreCliente");
+        // No es necesario abrir otro bloque de código JSP aquí, se puede continuar con el anterior.
+        List<ModeloDatos.Jugador> jugadores = (List<ModeloDatos.Jugador>) request.getAttribute("listaJugadores");
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
     <br>
@@ -30,7 +25,7 @@
         <!-- Aquí se muestran los datos de los jugadores -->
         <% 
         if (jugadores != null && !jugadores.isEmpty()) {
-            for (Jugador jugador : jugadores) {
+            for (ModeloDatos.Jugador jugador : jugadores) {
         %>
                 <tr>
                     <td><%= jugador.getNombre() %></td>

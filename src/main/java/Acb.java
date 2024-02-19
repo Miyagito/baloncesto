@@ -1,10 +1,13 @@
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Acb extends HttpServlet {
 
     private ModeloDatos bd;
+    
 
     @Override
     public void init(ServletConfig cfg) throws ServletException {
@@ -26,11 +29,16 @@ public class Acb extends HttpServlet {
         String accion = req.getParameter("accion");
     
         try {
+
             if ("VerVotos".equals(accion)) {
-                // Si la acción es VerVotos, simplemente redirige a la página correspondiente
-                res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
+                // Aquí utilizamos 'ModeloDatos.Jugador' para referenciar la clase interna 'Jugador'
+                List<ModeloDatos.Jugador> jugadores = bd.obtenerJugadores();
+                req.setAttribute("listaJugadores", jugadores);
+                RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");
+                rd.forward(req, res);
                 return;
             }
+
 
             if ("resetVotos".equals(accion)) {
                 bd.resetearVotos();
