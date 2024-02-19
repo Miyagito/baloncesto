@@ -12,7 +12,6 @@ public class Acb extends HttpServlet {
     @Override
     public void init(ServletConfig cfg) throws ServletException {
         try {
-            bd = new ModeloDatos();
             bd.abrirConexion();
         } catch (Exception e) {
             // Log the exception and rethrow as ServletException
@@ -32,7 +31,7 @@ public class Acb extends HttpServlet {
 
             if ("VerVotos".equals(accion)) {
                 // Aquí utilizamos 'ModeloDatos.Jugador' para referenciar la clase interna 'Jugador'
-                List<ModeloDatos.Jugador> jugadores = bd.obtenerJugadores();
+                List<Jugador> jugadores = bd.obtenerJugadores();
                 req.setAttribute("listaJugadores", jugadores);
                 RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");
                 rd.forward(req, res);
