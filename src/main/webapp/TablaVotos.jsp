@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -10,7 +11,6 @@
     <hr>
     <% 
         String nombreP = (String) session.getAttribute("nombreCliente");
-        // No es necesario abrir otro bloque de código JSP aquí, se puede continuar con el anterior.
         List<ModeloDatos.Jugador> jugadores = (List<ModeloDatos.Jugador>) request.getAttribute("listaJugadores");
     %>
     <p class="center-text">Muchas gracias <%= nombreP != null ? nombreP : "Anónimo" %> por tu voto.</p>
