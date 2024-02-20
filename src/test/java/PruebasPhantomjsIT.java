@@ -69,4 +69,33 @@ public class PruebasPhantomjsIT {
         }
     }
 
+    @Test
+    public void votarJugadorOtroYVerificar() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://localhost:8080/Baloncesto/");
+
+        // Introducir el nombre de un nuevo jugador
+        WebElement campoNombreOtro = driver.findElement(By.name("txtOtros"));
+        campoNombreOtro.sendKeys("Jugador Nuevo");
+
+        // Marcar la opción "Otro"
+        WebElement radioOtro = driver.findElement(By.xpath("//input[@type='radio'][@name='R1'][@value='Otros']"));
+        radioOtro.click();
+
+        // Pulsar el botón "Votar"
+        WebElement botonVotar = driver.findElement(By.xpath("//input[@type='submit'][@name='B1'][@value='Votar']"));
+        botonVotar.click();
+
+        // Volver a la página principal
+        driver.navigate().to("http://localhost:8080/Baloncesto/");
+
+        // Simular la pulsación del botón "Ver votos"
+        WebElement botonVerVotos = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']"));
+        botonVerVotos.click();
+
+        // Comprobar que el nuevo jugador tiene 1 voto
+        WebElement votoJugadorNuevo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(), 'Jugador Nuevo')]/following-sibling::td")));
+        assertEquals("1", votoJugadorNuevo.getText().trim(), "El jugador nuevo no tiene 1 voto.");
+    }
+
 }
