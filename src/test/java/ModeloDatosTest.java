@@ -33,9 +33,9 @@ public class ModeloDatosTest {
         when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true).thenReturn(false);
         when(mockResultSet.getInt("votos")).thenReturn(1); // Antes del update
-        
+
         modeloDatos = new ModeloDatos();
-        modeloDatos.setConnection(mockConnection); // Asumimos que existe este método en com.miapp.baloncesto.ModeloDatos
+        modeloDatos.setConnection(mockConnection);
     }
 
     @Test
