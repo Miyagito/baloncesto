@@ -1,3 +1,5 @@
+package com.miapp.baloncesto;
+
 import com.miapp.baloncesto.Jugador;
 
 import java.sql.*;
@@ -56,15 +58,13 @@ public class ModeloDatos {
     public void actualizarJugador(String nombre) {
         try {
             set = con.createStatement();
-            set.executeUpdate("UPDATE Jugadores SET votos=votos+1 WHERE nombre " + " LIKE '%" + nombre + "%'");
-            rs.close();
+            set.executeUpdate("UPDATE Jugadores SET votos=votos+1 WHERE nombre LIKE '%" + nombre + "%'");
             set.close();
         } catch (Exception e) {
-            // No modifica la tabla
-            System.out.println("No modifica la tabla");
-            System.out.println("El error es: " + e.getMessage());
+            System.out.println("No se pudo actualizar el jugador: " + e.getMessage());
         }
     }
+    
 
     public void insertarJugador(String nombre) {
         try {
@@ -105,7 +105,10 @@ public class ModeloDatos {
         }
         return jugadores;
     }
-    
+
+    public void setConnection(Connection connection) {
+        this.con = connection;
+    }
 
     public void cerrarConexion() {
         try {
