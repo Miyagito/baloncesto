@@ -105,7 +105,10 @@ public class ModeloDatos {
         }
         return jugadores;
     }
-    
+
+    public void setConnection(Connection connection) {
+        this.con = connection;
+    }
 
     public void cerrarConexion() {
         try {
