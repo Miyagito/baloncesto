@@ -7,7 +7,7 @@
     <title>Votación Mejor Jugador Liga ACB</title>
     <link href="estilos.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="resultado">
+<body class="resultadoVotos">
     <h1 class="center-text">Votación</h1>
     <hr>
     <% 

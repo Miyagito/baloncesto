@@ -7,6 +7,11 @@ body {
   background-color: darkred;
 }
 
+.resultadoVotos {
+  color: white;
+  background-color: rgb(0, 67, 139);
+}
+
 .left-align {
   text-align: left;
 }
