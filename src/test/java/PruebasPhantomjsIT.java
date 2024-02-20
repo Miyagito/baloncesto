@@ -51,8 +51,9 @@ public class PruebasPhantomjsIT {
         botonResetear.click();
 
         // Buscar y hacer clic en el botón "Ver votos"
-        WebElement botonVerVotos = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']"));
+        WebElement botonVerVotos = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']")));
         botonVerVotos.click();
+
 
         // Esperar a que la página de votos se cargue y verificar que todos los votos son cero
         List<WebElement> filasVotos = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//table//tr/td[2]"))); // Segunda columna de cada fila
