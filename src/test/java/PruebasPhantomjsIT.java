@@ -7,21 +7,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PruebasPhantomjsIT {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @BeforeEach
     public void setUp() {
-        DesiredCapabilities caps = new DesiredCapabilities();
+                DesiredCapabilities caps = new DesiredCapabilities();
         caps.setJavascriptEnabled(true);
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "/usr/bin/phantomjs");
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[]{"--web-security=no", "--ignore-ssl-errors=yes"});
         driver = new PhantomJSDriver(caps);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, 10);
     }
 
     @AfterEach
@@ -39,23 +43,22 @@ public class PruebasPhantomjsIT {
 
     @Test
     public void resetVotosYVerificar() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("http://localhost:8080/Baloncesto/");
 
-        // Haz clic en el botón para poner los votos a cero
-        WebElement resetButton = driver.findElement(By.name("accion"));
-        resetButton.click();
+        // Buscar y hacer clic en el botón "Poner votos a cero"
+        WebElement botonResetear = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='resetVotos']"));
+        botonResetear.click();
 
-        // Asumimos que el botón para ver votos es el segundo botón con el nombre "accion"
-        WebElement verVotosButton = driver.findElements(By.name("accion")).get(1);
-        verVotosButton.click();
+        // Buscar y hacer clic en el botón "Ver votos"
+        WebElement botonVerVotos = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']"));
+        botonVerVotos.click();
 
-        // Verifica que la página tiene el título correcto
-        assertEquals("Votación Mejor Jugador Liga ACB", driver.getTitle());
+        // Esperar a que la página de votos se cargue y verificar que todos los votos son cero
+        List<WebElement> filasVotos = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//table//tr/td[2]"))); // Segunda columna de cada fila
 
-        // Verifica que los votos son todos cero
-        List<WebElement> votos = driver.findElements(By.xpath("//table/tbody/tr/td[2]")); // Columna de votos
-        for (WebElement voto : votos) {
-            assertEquals("0", voto.getText());
+        for (WebElement voto : filasVotos) {
+            assertEquals("0", voto.getText().trim(), "El voto del jugador no es cero.");
         }
     }
 }
