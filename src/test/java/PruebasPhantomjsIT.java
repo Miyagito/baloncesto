@@ -20,7 +20,7 @@ public class PruebasPhantomjsIT {
 
     @BeforeEach
     public void setUp() {
-                DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities caps = new DesiredCapabilities();
         caps.setJavascriptEnabled(true);
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "/usr/bin/phantomjs");
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[]{"--web-security=no", "--ignore-ssl-errors=yes"});
@@ -50,10 +50,12 @@ public class PruebasPhantomjsIT {
         WebElement botonResetear = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='resetVotos']"));
         botonResetear.click();
 
-        // Buscar y hacer clic en el botón "Ver votos"
-        WebElement botonVerVotos = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']")));
-        botonVerVotos.click();
+        // Esperar a que la acción de reseteo pueda haberse completado y la página se haya recargado o redirigido si es necesario
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']")));
 
+        // Ahora buscar y hacer clic en el botón "Ver votos"
+        WebElement botonVerVotos = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']"));
+        wait.until(ExpectedConditions.elementToBeClickable(botonVerVotos)).click();
 
         // Esperar a que la página de votos se cargue y verificar que todos los votos son cero
         List<WebElement> filasVotos = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//table//tr/td[2]"))); // Segunda columna de cada fila
