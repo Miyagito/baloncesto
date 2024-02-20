@@ -1,3 +1,4 @@
+import com.miapp.baloncesto.ModeloDatos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
@@ -34,7 +35,7 @@ public class ModeloDatosTest {
         when(mockResultSet.getInt("votos")).thenReturn(1); // Antes del update
         
         modeloDatos = new ModeloDatos();
-        modeloDatos.setConnection(mockConnection); // Asumimos que existe este método en ModeloDatos
+        modeloDatos.setConnection(mockConnection); // Asumimos que existe este método en com.miapp.baloncesto.ModeloDatos
     }
 
     @Test

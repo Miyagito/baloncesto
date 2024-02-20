@@ -1,3 +1,5 @@
+package com.miapp.baloncesto;
+
 import com.miapp.baloncesto.Jugador;
 
 import java.sql.*;
