@@ -34,7 +34,7 @@ public class Acb extends HttpServlet {
             if ("VerVotos".equals(accion)) {
                 List<Jugador> jugadores = bd.obtenerJugadores();
                 req.setAttribute("listaJugadores", jugadores);
-                RequestDispatcher rd = req.getRequestDispatcher("TablaVotos.jsp");
+                RequestDispatcher rd = req.getRequestDispatcher("VerVotos.jsp");
                 rd.forward(req, res);
                 return;
             }
