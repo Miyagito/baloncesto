@@ -45,21 +45,17 @@ public class PruebasPhantomjsIT {
     public void resetVotosYVerificar() {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("http://localhost:8080/Baloncesto/");
-
-        // Buscar y hacer clic en el botón "Poner votos a cero"
+    
         WebElement botonResetear = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='resetVotos']"));
         botonResetear.click();
-
-        // Esperar a que la acción de reseteo pueda haberse completado y la página se haya recargado o redirigido si es necesario
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']")));
-
-        // Ahora buscar y hacer clic en el botón "Ver votos"
-        WebElement botonVerVotos = driver.findElement(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']"));
-        wait.until(ExpectedConditions.elementToBeClickable(botonVerVotos)).click();
-
-        // Esperar a que la página de votos se cargue y verificar que todos los votos son cero
+    
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit'][@name='B1'][@value='Votar']")));
+    
+        WebElement botonVerVotos = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='submit'][@name='accion'][@value='VerVotos']")));
+        botonVerVotos.click();
+    
         List<WebElement> filasVotos = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//table//tr/td[2]"))); // Segunda columna de cada fila
-
+    
         for (WebElement voto : filasVotos) {
             assertEquals("0", voto.getText().trim(), "El voto del jugador no es cero.");
         }
